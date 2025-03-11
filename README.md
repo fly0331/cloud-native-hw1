@@ -20,8 +20,8 @@ python --version
 
 1️. 下載專案（從 GitHub 或壓縮包解壓縮）
 
-git clone https://github.com/your-repo/cloudshop-cli.git
-cd cloudshop-cli
+git clone https://github.com/fly0331/cloud-native-hw1.git
+cd cloud-native-hw1
 
 2.  安裝依賴（確保 pip 可用）：
 
@@ -30,6 +30,7 @@ pip install -r requirements.txt
 3. 執行建置（格式化程式碼 & 檢查）
 
 ./build.sh  # Linux/macOS
+
 sh build.sh  # Windows（使用 Git Bash）
 
 ## Running the Application（執行專案）
@@ -37,6 +38,7 @@ sh build.sh  # Windows（使用 Git Bash）
 1. 執行 CLI 應用程式：
 
 ./run.sh  # Linux/macOS
+
 sh run.sh  # Windows（使用 Git Bash）
 
 2. 手動執行（若不使用 run.sh）
