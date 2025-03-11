@@ -21,12 +21,8 @@ git clone https://github.com/fly0331/cloud-native-hw1.git
 cd cloud-native-hw1
 ```
 
-### 2️⃣ 安裝依賴（確保 `pip` 可用）
-```bash
-pip install -r requirements.txt
-```
 
-### 3️⃣ 執行建置（格式化程式碼 & 檢查）
+### 2️⃣ 執行建置（格式化程式碼 & 檢查）
 ```bash
 ./build.sh  # Linux/macOS
 sh build.sh  # Windows（使用 Git Bash）
@@ -35,7 +31,7 @@ sh build.sh  # Windows（使用 Git Bash）
 ---
 
 ## 🚀 Running the Application（執行專案）
-### 1️⃣ 執行 CLI 應用程式
+### 1️⃣ 執行 CLI 
 ```bash
 ./run.sh  # Linux/macOS
 sh run.sh  # Windows（使用 Git Bash）
