@@ -11,7 +11,7 @@ def parse_command(command):
     return parsed
 
 def main():
-    shop = MarketPlace()
+    cloudShop = MarketPlace()
     
     while True:
         try:
@@ -30,48 +30,53 @@ def main():
                 if len(parts) != 2:
                     print("Error - invalid REGISTER format")
                     continue
-                shop.register_user(parts[1])
+                print(cloudShop.register_user(parts[1]))
 
             elif action == "CREATE_LISTING":
                 if len(parts) != 6:
                     print("Error - invalid CREATE_LISTING format")
                     continue
                 username, title, description, price, category = parts[1:]
-                shop.create_listing(username, title, description, price, category)
+                print(cloudShop.create_listing(username, title, description, price, category))
 
             elif action == "DELETE_LISTING":
                 if len(parts) != 3:
                     print("Error - invalid DELETE_LISTING format")
                     continue
                 username, listing_id = parts[1], int(parts[2])
-                shop.delete_listing(username, listing_id)
+                print(cloudShop.delete_listing(username, listing_id))
 
             elif action == "GET_LISTING":
                 if len(parts) != 3:
                     print("Error - invalid GET_LISTING format")
                     continue
                 username, listing_id = parts[1], int(parts[2])
-                shop.get_listing(username, listing_id)
+                print(cloudShop.get_listing(username, listing_id))
 
             elif action == "GET_CATEGORY":
                 if len(parts) != 3:
                     print("Error - invalid GET_CATEGORY format")
                     continue
                 username, category = parts[1], parts[2]
-                shop.get_category(username, category)
+                result = cloudShop.get_category(username, category)
+                for item in result:
+                    print(item)
 
             elif action == "GET_TOP_CATEGORY":
                 if len(parts) != 2:
                     print("Error - invalid GET_TOP_CATEGORY format")
                     continue
                 username = parts[1]
-                shop.get_top_category(username)
+                result = cloudShop.get_top_category(username)
+                for item in result:
+                    print(item)
 
             elif action == "EXIT":
                 break
 
             else:
                 print("Error - invalid command")
+                
         except ValueError:
             print("Error - invalid number format")
         except IndexError:

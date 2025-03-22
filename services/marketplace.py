@@ -1,79 +1,74 @@
-from repositories.storage import PersistentLayer
-from datetime import datetime
+from repositories.UserRepository import UserRepository
+from repositories.CategoryRepository import CategoryRepository
+from repositories.ListRepository import ListRepository  
+
 
 class MarketPlace:
     def __init__(self):
-        self.storage = PersistentLayer()
-    
+        self.user_storage = UserRepository()
+        self.category_storage = CategoryRepository()
+        self.list_storage = ListRepository(self.user_storage, self.category_storage)
+        
+    '''User service'''
     def register_user(self, username):
         username = username.lower()
-        if self.storage.user_exists(username):
-            print("Error - user already existing")
+        if self.user_storage.exists(username):
+            return("Error - user already existing")
         else:
-            self.storage.save_user(username)
-            print("Success")
-    
+            self.user_storage.save(username)
+            return("Success")
+        
+    '''List service'''
     def create_listing(self, username, title, description, price, category):
         username = username.lower()
-        if not self.storage.user_exists(username):
-            print("Error - unknown user")
-            return
-        
-        listing_id = self.storage.generate_listing_id()
-        created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        
-        self.storage.save_listing(listing_id, title, description, price, category, username, created_at)
-        print(listing_id)
-    
+        if not self.user_storage.exists(username):
+            return("Error - unknown user")
+
+        listing_id = self.list_storage.save(title, description, price, category, username)
+        return str(listing_id)
+
     def delete_listing(self, username, listing_id):
         username = username.lower()
-        if not self.storage.listing_exists(listing_id):
-            print("Error - listing does not exist")
-            return
-        
-        if self.storage.get_listing_owner(listing_id) != username:
-            print("Error - listing owner mismatch")
-            return
-        
-        self.storage.delete_listing(listing_id)
-        print("Success")
+        if not self.list_storage.exists(listing_id):
+            return "Error - listing does not exist"
+            
+        listing = self.list_storage.get_by_id(listing_id)
+        if listing["username"] != username:
+            return "Error - listing owner mismatch"
+            
+        self.list_storage.delete(listing_id)
+        return "Success"
     
     def get_listing(self, username, listing_id):
         username = username.lower()
-        if not self.storage.user_exists(username):
-            print("Error - unknown user")
-            return
-        
-        listing = self.storage.get_listing(listing_id)
+        if not self.user_storage.exists(username):
+            return "Error - unknown user"
+            
+        listing = self.list_storage.get_formatted(listing_id)
         if not listing:
-            print("Error - not found")
-            return
-        
-        print(listing)
+            return "Error - not found"
+            
+        return listing
     
+    ''' Category service'''
     def get_category(self, username, category):
         username = username.lower()
-        if not self.storage.user_exists(username):
-            print("Error - unknown user")
-            return
+        if not self.user_storage.exists(username):
+            return ["Error - unknown user"]
         
-        listings = self.storage.get_listings_by_category(category)
+        listings = self.list_storage.get_by_category(category)
         if not listings:
-            print("Error - category not found")
-            return
+            return ["Error - category not found"]
         
-        for listing in listings:
-            print(listing)
+        return listings
     
     def get_top_category(self, username):
         username = username.lower()
-        if not self.storage.user_exists(username):
-            print("Error - unknown user")
-            return
-        
-        top_category = self.storage.get_top_category()
-        if not top_category:
-            print("Error - no categories found")
-            return
-        
-        print(top_category)
+        if not self.user_storage.exists(username):  
+            return ["Error - unknown user"]
+            
+        top_categories = self.category_storage.get_top_categories()  
+        if not top_categories:
+            return ["Error - no categories found"]
+            
+        return top_categories
